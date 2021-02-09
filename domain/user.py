@@ -8,3 +8,10 @@ class User(BaseModel):
     email: str
     username: str
     password: Optional[str]
+
+
+class UserSearch(BaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[str]
+    username: Optional[str]
