@@ -12,7 +12,7 @@ async def create_user(user: User):
 
 
 @router.get("/users")
-async def create_user(first_name: Optional[str] = None, last_name: Optional[str] = None,
+async def get_user(first_name: Optional[str] = None, last_name: Optional[str] = None,
                       email: Optional[str] = None, username: Optional[str] = None):
     user_search = UserSearch(first_name=first_name, last_name=last_name,
                              email=email, username=username)
