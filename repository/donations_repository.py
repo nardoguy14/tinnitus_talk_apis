@@ -1,3 +1,4 @@
+from typing import Optional
 from domain.donation import Donation
 import mysql.connector
 
@@ -29,7 +30,8 @@ def create_donations(donation: Donation):
     mydb.close()
     return {"result": "saved"}
 
-def get_donations(username: str):
+
+def get_donations(username: Optional[str], fundraiser_id: Optional[str]):
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -37,6 +39,14 @@ def get_donations(username: str):
         database="tinnitus_talks"
     )
     cursor = mydb.cursor()
+
+    query_params = []
+    if username:
+        query_params.append(" username = %s ")
+    if fundraiser_id:
+        query_params.append(" fundraiser_id = %s ")
+
+    query_str = " AND ".join(query_params)
 
     query = ("""SELECT 
                     username,
@@ -46,9 +56,9 @@ def get_donations(username: str):
                     fundraiser_id,
                     amount,currency 
                 FROM donations 
-                WHERE username = %s"""
-             )
-    params = [username]
+            """
+            f"WHERE {query_str}")
+    params = [username, fundraiser_id]
     filtered_params = tuple(list(filter(lambda x: x != None, params)))
     cursor.execute(query, filtered_params)
 
