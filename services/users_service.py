@@ -8,5 +8,9 @@ def create_user(user: User):
     return users_repository.create_user(user)
 
 
+def update_user(user: User):
+    user.password = password_service.hash_password(user.password)
+    return users_repository.update_user(user)
+
 def get_user(user_search: UserSearch):
     return users_repository.get_user(user_search)

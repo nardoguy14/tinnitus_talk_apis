@@ -2,6 +2,31 @@ from domain.user import User, UserSearch
 import mysql.connector
 
 
+def update_user(user: User):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="CAMera14",
+        database="tinnitus_talks"
+    )
+    cursor = mydb.cursor()
+    sql = """UPDATE users 
+    SET
+    first_name = %s,
+    last_name  = %s,
+    email = %s,
+    description = %s,
+    password = %s
+    WHERE username = %s"""
+    val = (user.first_name, user.last_name, user.email,
+           user.description, user.password,user.username)
+    cursor.execute(sql, val)
+    mydb.commit()
+
+    cursor.close()
+    mydb.close()
+    return {"result": "updated"}
+
 def create_user(user: User):
     mydb = mysql.connector.connect(
         host="localhost",

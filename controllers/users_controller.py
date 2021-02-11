@@ -11,6 +11,11 @@ async def create_user(user: User):
     return users_service.create_user(user)
 
 
+@router.put("/users")
+async def update_user(user: User):
+    return users_service.update_user(user)
+
+
 @router.get("/users")
 async def get_user(first_name: Optional[str] = None, last_name: Optional[str] = None,
                       email: Optional[str] = None, username: Optional[str] = None):
