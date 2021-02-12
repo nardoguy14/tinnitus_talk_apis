@@ -1,7 +1,8 @@
 from pydantic import BaseModel
-
+from typing import Optional
 
 class Fundraiser(BaseModel):
+    id: Optional[int]
     name: str
     description:str
     address: str
