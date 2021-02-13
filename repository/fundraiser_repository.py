@@ -1,5 +1,5 @@
 from typing import Optional
-from domain.fundraisers import Fundraiser
+from domain.fundraisers import Fundraiser, UserFundraiserEnrollment
 import mysql.connector
 
 
@@ -132,6 +132,74 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
                                 address=address, city=city, state=state, zip=zip,
                                 date_start=date_start.strftime("%Y-%m-%d %H:%M:%S"),
                                 date_end=date_end.strftime("%Y-%m-%d %H:%M:%S")))
+
+    cursor.close()
+    mydb.close()
+    return results
+
+def enroll_user_in_fundraiser(user_fundraiser_enrollment: UserFundraiserEnrollment):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="CAMera14",
+        database="tinnitus_talks"
+    )
+
+    cursor = mydb.cursor()
+    sql = """
+    INSERT INTO users_to_fundraisers (
+        user_id,
+        fundraiser_id,
+        fundraiser_goal
+    ) VALUES (%s, %s, %s)
+    """
+
+    val = (
+        user_fundraiser_enrollment.user_id,
+        user_fundraiser_enrollment.fundraiser_id,
+        user_fundraiser_enrollment.fundraiser_goal_amount
+    )
+
+    cursor.execute(sql, val)
+    mydb.commit()
+
+    cursor.close()
+    mydb.close()
+    return {"result": "saved"}
+
+
+def get_users_fundraisers(user_id: int):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="CAMera14",
+        database="tinnitus_talks"
+    )
+    cursor = mydb.cursor()
+
+    query = ("""
+                SELECT 
+                    id,
+                    user_id,
+                    fundraiser_id,
+                    fundraiser_goal
+                FROM users_to_fundraisers 
+                WHERE user_id = %s
+            """
+            )
+    params = [user_id]
+    filtered_params = tuple(list(filter(lambda x: x != None, params)))
+    cursor.execute(query, filtered_params)
+
+    results = []
+    for (
+            id,
+            user_id,
+            fundraiser_id,
+            fundraiser_goal
+    ) in cursor:
+        results.append(UserFundraiserEnrollment(
+            user_id=user_id, fundraiser_id=fundraiser_id, fundraiser_goal_amount=fundraiser_goal))
 
     cursor.close()
     mydb.close()

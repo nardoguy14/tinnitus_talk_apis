@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from domain.fundraisers import Fundraiser
+from domain.fundraisers import Fundraiser, UserFundraiserEnrollment
 from services import fundraisers_service
 from typing import Optional
 
@@ -18,3 +18,11 @@ async def create_fundraiser(id: str, fundraiser: Fundraiser):
 @fundraisers_router.get("/fundraisers")
 async def create_fundraiser(id: Optional[str], name: Optional[str] = None):
     return fundraisers_service.get_fundraiser(id, name)
+
+@fundraisers_router.post("/users/fundraisers")
+async def create_fundraiser(user_fundraiser_enrollment: UserFundraiserEnrollment):
+    return fundraisers_service.enroll_user_to_fundraiser(user_fundraiser_enrollment)
+
+@fundraisers_router.get("/users/{user_id}/fundraisers")
+async def create_fundraiser(user_id: str):
+    return fundraisers_service.get_users_fundraisers(user_id)
