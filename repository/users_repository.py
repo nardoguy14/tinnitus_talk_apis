@@ -74,8 +74,15 @@ def get_user(user_search: UserSearch):
 
     query_str = " AND ".join(query_params)
 
-    query = ("SELECT username, first_name, last_name, email, description FROM users "
-             f"WHERE {query_str}")
+    query = ("""SELECT
+                    id, 
+                    username, 
+                    first_name, 
+                    last_name, 
+                    email, 
+                    description 
+                FROM users """
+              f"WHERE {query_str}")
 
     params = [user_search.first_name, user_search.last_name,
               user_search.username, user_search.email]
@@ -84,10 +91,42 @@ def get_user(user_search: UserSearch):
     cursor.execute(query, filtered_params)
 
     results = []
-    for (username, first_name, last_name, email, description) in cursor:
-        results.append(User(username=username, first_name=first_name,
+    for (id, username, first_name, last_name, email, description) in cursor:
+        results.append(User(id=id, username=username, first_name=first_name,
                             last_name=last_name, description=description,
                             email=email))
+
+    cursor.close()
+    mydb.close()
+    return results
+
+
+def get_password_hash(username: str):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="CAMera14",
+        database="tinnitus_talks"
+    )
+    cursor = mydb.cursor()
+
+    query = ("""SELECT 
+                    password
+                FROM users
+                WHERE username = %s 
+            """
+            )
+
+    params = [username]
+    filtered_params = tuple(list(filter(lambda x: x != None, params)))
+
+    cursor.execute(query, filtered_params)
+
+    results = []
+    for password in cursor:
+        results.append(password[0])
+
+    print(results)
 
     cursor.close()
     mydb.close()

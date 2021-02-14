@@ -1,9 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Form, Request, Header, HTTPException
 from typing import Optional
 from domain.user import User, UserSearch
 from services import users_service
 
 router = APIRouter()
+
+@router.post("/users/me/login")
+async def update_user(username: str = Form(...),
+                      password: str = Form(...),
+                      grant_type: Optional[str] = Header(None)):
+    if grant_type != "password":
+        return HTTPException(409, "Grant type not provided.")
+    return users_service.login_user(username, password)
 
 
 @router.post("/users")

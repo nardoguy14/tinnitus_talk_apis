@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 mysql-connector-python
 bcrypt
+python-multipart
+pyjwt
