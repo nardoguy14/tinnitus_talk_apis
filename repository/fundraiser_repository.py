@@ -1,5 +1,5 @@
 from typing import Optional
-from domain.fundraisers import Fundraiser, UserFundraiserEnrollment
+from domain.fundraisers import Fundraiser, UserFundraiserEnrollment, FundraiserDetails
 from repository.base_repository import BaseRepository
 
 
@@ -27,7 +27,26 @@ def create_fundraiser(fundraiser: Fundraiser):
         )
 
         base_repo.execute(sql, val)
+        return base_repo.lastrowid
+
+
+def create_fundraiser_details(fundraiser: Fundraiser):
+    with BaseRepository() as base_repo:
+        for detail in fundraiser.details:
+            sql = """
+            INSERT INTO fundraiser_details (
+                fundraiser_id,
+                title,
+                detail
+            ) VALUES (%s, %s, %s)"""
+            val = (
+                fundraiser.id,
+                detail.title,
+                detail.detail
+            )
+            base_repo.execute(sql, val)
         return {"result": "saved"}
+
 
 def update_fundraiser(fundraiser: Fundraiser):
     with BaseRepository() as base_repo:
@@ -55,6 +74,36 @@ def update_fundraiser(fundraiser: Fundraiser):
         )
         base_repo.execute(sql, val)
         return {"result": "updated"}
+
+
+def get_fundraisers_details(id: Optional[int]):
+    with BaseRepository() as base_repo:
+        if id:
+            query_str = f" WHERE fundraiser_id = %s"
+
+        query = (f"""SELECT 
+                        id,
+                        fundraiser_id,
+                        title,
+                        detail
+                    FROM fundraiser_details 
+                    {query_str}  
+                """)
+        params = [id]
+        filtered_params = tuple(list(filter(lambda x: x != None, params)))
+        base_repo.execute(query, filtered_params)
+
+        results = []
+        for (
+                id,
+                fundraiser_id,
+                title,
+                detail
+            ) in base_repo:
+            results.append(FundraiserDetails(id=id, fundraiser_id=fundraiser_id,
+                                             title=title, detail=detail))
+
+        return results
 
 
 def get_fundraisers(name: Optional[str], id: Optional[int]):
@@ -105,6 +154,7 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
                                     date_end=date_end.strftime("%Y-%m-%d %H:%M:%S")))
 
         return results
+
 
 def enroll_user_in_fundraiser(user_fundraiser_enrollment: UserFundraiserEnrollment):
     with BaseRepository() as base_repo:

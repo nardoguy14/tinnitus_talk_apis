@@ -14,7 +14,7 @@ class BaseRepository(object):
     def __enter__(self):
         return self.cursor
 
-    def __exit__(self):
+    def __exit__(self, a, b, c):
         self.mydb.commit()
         self.cursor.close()
         self.mydb.close()
