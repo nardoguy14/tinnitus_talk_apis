@@ -13,6 +13,7 @@ class User(BaseModel):
 
 
 class UserSearch(BaseModel):
+    user_id: Optional[str]
     first_name: Optional[str]
     last_name: Optional[str]
     email: Optional[str]

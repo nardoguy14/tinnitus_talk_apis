@@ -37,6 +37,8 @@ def get_user(user_search: UserSearch):
     with BaseRepository() as base_repo:
 
         query_params = []
+        if user_search.user_id:
+            query_params.append(" id = %s")
         if user_search.first_name:
             query_params.append(" first_name = %s ")
         if user_search.last_name:
@@ -58,7 +60,7 @@ def get_user(user_search: UserSearch):
                     FROM users """
                   f"WHERE {query_str}")
 
-        params = [user_search.first_name, user_search.last_name,
+        params = [user_search.user_id, user_search.first_name, user_search.last_name,
                   user_search.username, user_search.email]
         filtered_params = tuple(list(filter(lambda x: x != None, params)))
 

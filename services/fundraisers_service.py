@@ -1,7 +1,9 @@
+from domain.donation import Donation, DonationWithUser
 from domain.fundraisers import Fundraiser, UserFundraiserEnrollment
+from domain.user import UserSearch
 from repository import fundraiser_repository
 from typing import Optional, List
-from services import donations_service
+from services import donations_service, users_service
 
 def create_fundraiser(fundraiser: Fundraiser):
     id = fundraiser_repository.create_fundraiser(fundraiser)
@@ -20,9 +22,19 @@ def get_fundraiser(id: Optional[int], name: Optional[str]):
         user_fundraiser_enrollments = get_user_fundraiser_enrollments(user_id=None, fundraiser_id=fundraiser.id)
         user_ids = []
         for enrollment in user_fundraiser_enrollments:
-            print(enrollment)
             user_ids.append(enrollment.user_id)
-        fundraiser.people = donations_service.get_donation_sums(user_ids, fundraiser.id)
+        people = donations_service.get_donation_sums(user_ids, fundraiser.id)
+        for index, person in enumerate(people):
+            user = users_service.get_user(UserSearch(user_id=person.user_id))
+            people[index] = DonationWithUser(user=user[0],
+                                             fundraiser_id=person.fundraiser_id,
+                                             donor_first_name=person.donor_first_name,
+                                             donor_last_name=person.donor_last_name,
+                                             donor_comment=person.donor_comment,
+                                             amount=person.amount,
+                                             currency=person.currency)
+
+        fundraiser.people = people
     return fundraisers
 
 

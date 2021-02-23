@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
-from domain.donation import Donation
+from domain.donation import Donation, DonationWithUser
 
 
 class FundraiserDetails(BaseModel):
@@ -24,6 +24,6 @@ class Fundraiser(BaseModel):
     city: str
     state: str
     zip: str
-    people: Optional[List[Donation]]
+    people: Optional[List[DonationWithUser]]
     date_start: str
     date_end: str
