@@ -176,8 +176,18 @@ def enroll_user_in_fundraiser(user_fundraiser_enrollment: UserFundraiserEnrollme
         return {"result": "saved"}
 
 
-def get_users_fundraisers(user_id: int):
+def get_users_fundraisers(user_id: Optional[int], fundraiser_id: Optional[int]):
     with BaseRepository() as base_repo:
+        query_params = []
+        if user_id:
+            query_params.append(" user_id LIKE %s ")
+        if fundraiser_id:
+            query_params.append(" fundraiser_id = %s ")
+
+        query_str = " AND ".join(query_params)
+        if fundraiser_id or user_id:
+            query_str = f" WHERE {query_str}"
+
         query = ("""
                     SELECT 
                         id,
@@ -185,10 +195,11 @@ def get_users_fundraisers(user_id: int):
                         fundraiser_id,
                         fundraiser_goal
                     FROM users_to_fundraisers 
-                    WHERE user_id = %s
                 """
+                f"""{query_str}"""
                 )
-        params = [user_id]
+        print(query)
+        params = [user_id, fundraiser_id]
         filtered_params = tuple(list(filter(lambda x: x != None, params)))
         base_repo.execute(query, filtered_params)
 
