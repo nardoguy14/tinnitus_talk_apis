@@ -15,6 +15,12 @@ class UserFundraiserEnrollment(BaseModel):
     fundraiser_goal_amount: int
 
 
+class FundraiserContact(BaseModel):
+    name: str
+    phone_number: str
+    email: str
+
+
 class Fundraiser(BaseModel):
     id: Optional[int]
     name: str
@@ -25,5 +31,6 @@ class Fundraiser(BaseModel):
     state: str
     zip: str
     people: Optional[List[DonationWithUser]]
+    contact: FundraiserContact
     date_start: str
     date_end: str

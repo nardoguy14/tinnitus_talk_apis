@@ -1,5 +1,5 @@
 from typing import Optional
-from domain.fundraisers import Fundraiser, UserFundraiserEnrollment, FundraiserDetails
+from domain.fundraisers import Fundraiser, UserFundraiserEnrollment, FundraiserDetails, FundraiserContact
 from repository.base_repository import BaseRepository
 
 
@@ -12,6 +12,9 @@ def create_fundraiser(fundraiser: Fundraiser):
         city,
         state,
         zip,
+        contact_person,
+        contact_email,
+        contact_phone,
         date_start,
         date_end
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
@@ -22,6 +25,9 @@ def create_fundraiser(fundraiser: Fundraiser):
                fundraiser.city,
                fundraiser.state,
                fundraiser.zip,
+               fundraiser.contact.name,
+               fundraiser.contact.email,
+               fundraiser.contact.phone_number,
                fundraiser.date_start,
                fundraiser.date_end
         )
@@ -58,6 +64,9 @@ def update_fundraiser(fundraiser: Fundraiser):
         city = %s,
         state = %s,
         zip = %s,
+        contact_person = %s,
+        contact_phone = %s,
+        contact_email = %s,
         date_start = %s,
         date_end = %s
         WHERE id = %s"""
@@ -68,6 +77,9 @@ def update_fundraiser(fundraiser: Fundraiser):
             fundraiser.city,
             fundraiser.state,
             fundraiser.zip,
+            fundraiser.contact.name,
+            fundraiser.contact.phone_number,
+            fundraiser.contact.email,
             fundraiser.date_start,
             fundraiser.date_end,
             fundraiser.id
@@ -126,6 +138,9 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
                         city,
                         state,
                         zip,
+                        contact_person,
+                        contact_email,
+                        contact_phone,
                         date_start,
                         date_end
                     FROM fundraisers 
@@ -144,12 +159,16 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
              city,
              state,
              zip,
+             contact_person,
+             contact_email,
+             contact_phone,
              date_start,
              date_end) in base_repo:
-            print(date_start)
-            print(type(date_start))
             results.append(Fundraiser(id=id, name=name, description=description,
                                     address=address, city=city, state=state, zip=zip,
+                                    contact=FundraiserContact(name=contact_person,
+                                                              phone_number=contact_phone,
+                                                              email=contact_email),
                                     date_start=date_start.strftime("%Y-%m-%d %H:%M:%S"),
                                     date_end=date_end.strftime("%Y-%m-%d %H:%M:%S")))
 
