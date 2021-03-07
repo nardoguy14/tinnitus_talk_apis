@@ -42,6 +42,6 @@ def enroll_user_to_fundraiser(user_fundraiser_enrollment: UserFundraiserEnrollme
     return fundraiser_repository.enroll_user_in_fundraiser(user_fundraiser_enrollment)
 
 
-def get_user_fundraiser_enrollments(user_id: Optional[int],
-                                    fundraiser_id: Optional[int]) -> List[UserFundraiserEnrollment]:
+def get_user_fundraiser_enrollments(user_id: Optional[int] = None,
+                                    fundraiser_id: Optional[int] = None) -> List[UserFundraiserEnrollment]:
     return fundraiser_repository.get_users_fundraisers(user_id, fundraiser_id)
