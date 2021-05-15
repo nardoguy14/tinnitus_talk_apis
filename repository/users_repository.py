@@ -18,6 +18,7 @@ def update_user(user: User):
         base_repo.execute(sql, val)
         return {"result": "updated"}
 
+
 def create_user(user: User):
     with BaseRepository() as base_repo:
         sql = """INSERT INTO users (
@@ -32,6 +33,7 @@ def create_user(user: User):
                user.email, user.description, user.password)
         base_repo.execute(sql, val)
         return {"result": "saved"}
+
 
 def get_user(user_search: UserSearch):
     with BaseRepository() as base_repo:

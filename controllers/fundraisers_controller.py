@@ -16,7 +16,7 @@ async def update_fundraiser(id: str, fundraiser: Fundraiser):
     return fundraisers_service.update_fundraiser(fundraiser)
 
 @fundraisers_router.get("/fundraisers")
-async def get_all_fundraiser(id: Optional[str], name: Optional[str] = None):
+async def get_all_fundraiser(id: Optional[str] = None, name: Optional[str] = None):
     return fundraisers_service.get_fundraiser(id, name)
 
 @fundraisers_router.post("/users/fundraisers")

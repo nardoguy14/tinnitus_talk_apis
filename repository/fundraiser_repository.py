@@ -122,7 +122,8 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
     with BaseRepository() as base_repo:
         query_params = []
         if name:
-            query_params.append(" username LIKE %s ")
+            name = f"%{name}%"
+            query_params.append(" name LIKE %s ")
         if id:
             query_params.append(" id = %s ")
 
@@ -146,8 +147,11 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
                     FROM fundraisers 
                 """
                  f"{query_str}")
+        print(query)
+        print(name)
         params = [name, id]
         filtered_params = tuple(list(filter(lambda x: x != None, params)))
+        print(filtered_params)
         base_repo.execute(query, filtered_params)
 
         results = []
@@ -164,6 +168,7 @@ def get_fundraisers(name: Optional[str], id: Optional[int]):
              contact_phone,
              date_start,
              date_end) in base_repo:
+            print(results)
             results.append(Fundraiser(id=id, name=name, description=description,
                                     address=address, city=city, state=state, zip=zip,
                                     contact=FundraiserContact(name=contact_person,
