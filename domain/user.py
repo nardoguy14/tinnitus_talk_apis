@@ -4,12 +4,18 @@ from typing import Optional
 
 class User(BaseModel):
     id: Optional[int]
-    first_name: str
-    last_name:str
-    description: str
+    firstName: str
+    lastName:str
+    description: Optional[str]
     email: str
     username: str
     password: Optional[str]
+    dateOfBirth: Optional[str]
+    streetAddress1: Optional[str]
+    streetAddress2: Optional[str]
+    country: Optional[str]
+    zipCode: Optional[str]
+    phoneNumber: Optional[str]
 
 
 

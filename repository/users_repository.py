@@ -13,8 +13,8 @@ def update_user(user: User):
         description = %s,
         password = %s
         WHERE username = %s"""
-        val = (user.first_name, user.last_name, user.email,
-               user.description, user.password,user.username)
+        val = (user.firstName, user.lastName, user.email,
+               user.description, user.password, user.username)
         base_repo.execute(sql, val)
         return {"result": "updated"}
 
@@ -27,10 +27,18 @@ def create_user(user: User):
         last_name,
         email,
         description,
-        password
-        ) VALUES (%s, %s, %s, %s, %s, %s)"""
-        val = (user.username, user.first_name, user.last_name,
-               user.email, user.description, user.password)
+        password,
+        dateOfBirth,
+        streetAddress1,
+        streetAddress2,
+        country,
+        zip,
+        phoneNumber
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        val = (user.username, user.firstName, user.lastName,
+               user.email, user.description, user.password,
+               user.dateOfBirth, user.streetAddress1, user.streetAddress2,
+               user.country, user.zipCode, user.phoneNumber)
         base_repo.execute(sql, val)
         return {"result": "saved"}
 
