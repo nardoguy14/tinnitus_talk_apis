@@ -78,8 +78,11 @@ def get_user(user_search: UserSearch):
 
         results = []
         for (id, username, first_name, last_name, email, description) in base_repo:
-            results.append(User(id=id, username=username, first_name=first_name,
-                                last_name=last_name, description=description,
+            results.append(User(id=id,
+                                username=username,
+                                firstName=first_name,
+                                lastName=last_name,
+                                description=description,
                                 email=email))
         return results
 

@@ -5,8 +5,10 @@ from services import password_service, tokens_service
 
 
 def create_user(user: User):
+    plain_password = user.password
     user.password = password_service.hash_password(user.password)
-    return users_repository.create_user(user)
+    users_repository.create_user(user)
+    return login_user(user.username, plain_password)
 
 
 def login_user(user_name: str, password: str):
