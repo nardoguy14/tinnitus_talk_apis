@@ -11,10 +11,20 @@ def update_user(user: User):
         last_name  = %s,
         email = %s,
         description = %s,
-        password = %s
+        password = %s,
+        dateOfBirth = %s,
+        streetAddress1 = %s,
+        streetAddress2 = %s,
+        country = %s,
+        zip = %s,
+        phoneNumber = %s
         WHERE username = %s"""
-        val = (user.firstName, user.lastName, user.email,
-               user.description, user.password, user.username)
+        val = (
+               user.firstName, user.lastName, user.email,
+               user.description, user.password,
+               user.dateOfBirth, user.streetAddress1, user.streetAddress2,
+               user.country, user.zipCode, user.phoneNumber, user.username
+               )
         base_repo.execute(sql, val)
         return {"result": "updated"}
 

@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Form, Request, Header, HTTPException
+from fastapi import APIRouter, Form, Request, Header, HTTPException, Depends
 from typing import Optional
 from domain.user import User, UserSearch
 from services import users_service
+from domain.authorization_helpers import authorization_check
 
 router = APIRouter()
 
@@ -20,7 +21,7 @@ async def create_user(user: User):
 
 
 @router.put("/users")
-async def update_user(user: User):
+async def update_user(user: User, req=Depends(authorization_check)):
     return users_service.update_user(user)
 
 
