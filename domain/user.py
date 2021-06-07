@@ -4,11 +4,11 @@ from typing import Optional
 
 class User(BaseModel):
     id: Optional[int]
-    firstName: str
-    lastName:str
+    firstName: Optional[str]
+    lastName: Optional[str]
     description: Optional[str]
-    email: str
-    username: str
+    email: Optional[str]
+    username: Optional[str]
     password: Optional[str]
     dateOfBirth: Optional[str]
     streetAddress1: Optional[str]

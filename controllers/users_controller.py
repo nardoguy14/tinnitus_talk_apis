@@ -21,8 +21,9 @@ async def create_user(user: User):
 
 
 @router.put("/users")
-async def update_user(user: User, req=Depends(authorization_check)):
-    return users_service.update_user(user)
+async def update_user(user: User, user_claims=Depends(authorization_check)):
+
+    return users_service.update_user(user_claims, user)
 
 
 @router.get("/users")

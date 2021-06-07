@@ -3,29 +3,47 @@ import mysql.connector
 from repository.base_repository import BaseRepository
 
 
-def update_user(user: User):
+def update_user(user_claims, user: User):
     with BaseRepository() as base_repo:
-        sql = """UPDATE users 
+        params = []
+
+        if user.firstName:
+            params.append(' first_name = %s ')
+        if user.lastName:
+            params.append(' last_name = %s ')
+        if user.description:
+            params.append(' description = %s ')
+        if user.email:
+            params.append(' email = %s ')
+        if user.password:
+            params.append(' password = %s ')
+        if user.dateOfBirth:
+            params.append(' dateOfBirth = %s ')
+        if user.streetAddress1:
+            params.append(' streetAddress1 = %s ')
+        if user.streetAddress2:
+            params.append(' streetAddress2 = %s ')
+        if user.country:
+            params.append(' country = %s ')
+        if user.zipCode:
+            params.append(' zip = %s ')
+        if user.phoneNumber:
+            params.append(' phoneNumber = %s ')
+
+        query_str = f" , ".join(params)
+
+        params = [user.firstName, user.lastName, user.description, user.email,
+                  user.password, user.dateOfBirth, user.streetAddress1, user.streetAddress2,
+                  user.country, user.zipCode, user.phoneNumber, user_claims['username']]
+        filtered_params = tuple(list(filter(lambda x: x != None, params)))
+
+        sql = f"""
+        UPDATE users 
         SET
-        first_name = %s,
-        last_name  = %s,
-        email = %s,
-        description = %s,
-        password = %s,
-        dateOfBirth = %s,
-        streetAddress1 = %s,
-        streetAddress2 = %s,
-        country = %s,
-        zip = %s,
-        phoneNumber = %s
+        {query_str}
         WHERE username = %s"""
-        val = (
-               user.firstName, user.lastName, user.email,
-               user.description, user.password,
-               user.dateOfBirth, user.streetAddress1, user.streetAddress2,
-               user.country, user.zipCode, user.phoneNumber, user.username
-               )
-        base_repo.execute(sql, val)
+
+        base_repo.execute(sql, filtered_params)
         return {"result": "updated"}
 
 

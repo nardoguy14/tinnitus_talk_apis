@@ -26,9 +26,10 @@ def login_user(user_name: str, password: str):
     else:
         raise HTTPException(400, "Invalid credentials.")
 
-def update_user(user: User):
-    user.password = password_service.hash_password(user.password)
-    return users_repository.update_user(user)
+def update_user(user_claims, user: User):
+    if user.password:
+        user.password = password_service.hash_password(user.password)
+    return users_repository.update_user(user_claims, user)
 
 
 def get_user(user_search: UserSearch):
