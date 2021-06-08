@@ -69,6 +69,8 @@ def get_donations_amounts_for_users(user_ids: List[int], fundraiser_id: str):
         format_strings = ','.join(['%s'] * len(user_ids))
         print(format_strings)
         user_ids_str = "user_id in (%s)" % format_strings
+
+
         query = (f"""
                     select 
                         user_id, 
