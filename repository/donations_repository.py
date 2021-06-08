@@ -62,6 +62,8 @@ def get_donations(username: Optional[str], fundraiser_id: Optional[str]):
 
 def get_donations_amounts_for_users(user_ids: List[int], fundraiser_id: str):
     with BaseRepository() as base_repo:
+        if len(user_ids) == 0:
+            return []
         print(user_ids)
         print(fundraiser_id)
         format_strings = ','.join(['%s'] * len(user_ids))
