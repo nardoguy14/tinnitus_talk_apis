@@ -4,3 +4,4 @@ mysql-connector-python
 bcrypt
 python-multipart
 pyjwt
+boto3

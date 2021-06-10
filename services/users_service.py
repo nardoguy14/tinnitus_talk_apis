@@ -1,8 +1,8 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
 from domain.user import User, UserSearch
 from repository import users_repository
 from services import password_service, tokens_service
-
+from services import aws_service
 
 def create_user(user: User):
     plain_password = user.password
@@ -26,6 +26,7 @@ def login_user(user_name: str, password: str):
     else:
         raise HTTPException(400, "Invalid credentials.")
 
+
 def update_user(user_claims, user: User):
     if user.password:
         user.password = password_service.hash_password(user.password)
@@ -34,3 +35,12 @@ def update_user(user_claims, user: User):
 
 def get_user(user_search: UserSearch):
     return users_repository.get_user(user_search)
+
+
+def upload_profile_photo(username: str, file: UploadFile):
+    aws_service.upload_file(username, 'profilephoto.jpg', file, "tinnitus-app")
+
+
+def download_profile_photo(username: str):
+    print(username)
+    return aws_service.download_file(username, "tinnitus-app", "profilephoto.jpg")
