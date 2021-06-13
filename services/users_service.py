@@ -37,10 +37,9 @@ def get_user(user_search: UserSearch):
     return users_repository.get_user(user_search)
 
 
-def upload_profile_photo(username: str, file: UploadFile):
-    aws_service.upload_file(username, 'profilephoto.jpg', file, "tinnitus-app")
+def upload_photo(photo_kind: str, username: str, file: UploadFile):
+    aws_service.upload_file(username, f'{photo_kind}photo.jpg', file, "tinnitus-app")
 
 
-def download_profile_photo(username: str):
-    print(username)
-    return aws_service.download_file(username, "tinnitus-app", "profilephoto.jpg")
+def download_photo(photo_kind: str, username: str):
+    return aws_service.download_file(username, "tinnitus-app", f"{photo_kind}photo.jpg")

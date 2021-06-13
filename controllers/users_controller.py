@@ -28,15 +28,16 @@ async def create_user(user: User):
     return users_service.create_user(user)
 
 
-@router.post("/users/photos/profile")
-async def upload_profile_photo(file: UploadFile = File(...), user_claims=Depends(authorization_check) ):
+@router.post("/users/photos/{photo_kind}")
+async def upload_profile_photo(photo_kind: str, file: UploadFile = File(...), user_claims=Depends(authorization_check) ):
     logger.info(file.filename)
-    users_service.upload_profile_photo(user_claims['username'], file)
+    users_service.upload_photo(photo_kind, user_claims['username'], file)
     return {"filename": file.filename}
 
-@router.get("/users/photos/profile")
-def image_endpoint(user_claims=Depends(authorization_check)):
-    file = users_service.download_profile_photo(user_claims['username'])
+
+@router.get("/users/photos/{photo_kind}")
+def image_endpoint(photo_kind: str, user_claims=Depends(authorization_check)):
+    file = users_service.download_photo(photo_kind, user_claims['username'])
     return StreamingResponse(io.BytesIO(file), media_type="image/jpg")
 
 

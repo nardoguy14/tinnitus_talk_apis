@@ -3,6 +3,8 @@ import boto3
 from botocore.exceptions import ClientError
 from fastapi import UploadFile
 import os
+import base64
+
 
 
 def upload_file(username: str, filename: str, file: UploadFile, bucket, object_name=None):
@@ -40,4 +42,5 @@ def download_file(username: str, bucket, object_name=None):
     x = in_file.read()
     in_file.close()
     os.remove(temp_file_name)
-    return x
+    encoded_string = base64.b64encode(x)
+    return encoded_string

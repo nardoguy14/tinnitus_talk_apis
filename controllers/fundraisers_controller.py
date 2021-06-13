@@ -25,4 +25,5 @@ async def create_fundraiser(user_fundraiser_enrollment: UserFundraiserEnrollment
 
 @fundraisers_router.get("/users/{user_id}/fundraisers")
 async def get_fundraiser(user_id: str):
+    print(f"nardo: {user_id}")
     return fundraisers_service.get_user_fundraiser_enrollments(user_id=int(user_id))
