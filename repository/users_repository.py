@@ -70,6 +70,33 @@ def create_user(user: User):
         base_repo.execute(sql, val)
         return {"result": "saved"}
 
+def insert_photo(user: User, photo_name, photo_encoded):
+    with BaseRepository() as base_repo:
+        sql = """INSERT INTO users_photos (
+        user_id,
+        photo_name,
+        photo_encoded
+        ) VALUES (%s, %s, %s)"""
+        val = (user.id, photo_name, photo_encoded)
+        base_repo.execute(sql, val)
+        return {"result": "saved"}
+
+def get_photo(user: User, name: str):
+    with BaseRepository() as base_repo:
+
+        query = ("""SELECT
+                        photo_encoded 
+                    FROM users_photos
+                    WHERE user_id = %s AND photo_name = %s"""
+                )
+
+        base_repo.execute(query, (user.id, name))
+        results = []
+        for (photo_encoded) in base_repo:
+            results.append(photo_encoded)
+
+        return results[0]
+
 
 def get_user(user_search: UserSearch):
     with BaseRepository() as base_repo:

@@ -1,3 +1,4 @@
+import base64
 from fastapi import HTTPException, UploadFile
 from domain.user import User, UserSearch
 from repository import users_repository
@@ -37,9 +38,19 @@ def get_user(user_search: UserSearch):
     return users_repository.get_user(user_search)
 
 
-def upload_photo(photo_kind: str, username: str, file: UploadFile):
+async def upload_photo(photo_kind: str, username: str, file: UploadFile):
+    file_bytes = await file.read()
+    user = get_user(UserSearch(username=username))[0]
+    encoded_string = base64.b64encode(file_bytes)
+    users_repository.insert_photo(user, f'{photo_kind}photo.jpg', encoded_string)
     aws_service.upload_file(username, f'{photo_kind}photo.jpg', file, "tinnitus-app")
 
 
 def download_photo(photo_kind: str, username: str):
-    return aws_service.download_file(username, "tinnitus-app", f"{photo_kind}photo.jpg")
+    user = get_user(UserSearch(username=username))[0]
+    try:
+        x = users_repository.get_photo(user, f"{photo_kind}photo.jpg")
+        xx = bytes(x[0], 'utf-8')
+        return xx
+    except Exception as e:
+        return aws_service.download_file(username, "tinnitus-app", f"{photo_kind}photo.jpg")

@@ -31,7 +31,7 @@ async def create_user(user: User):
 @router.post("/users/photos/{photo_kind}")
 async def upload_profile_photo(photo_kind: str, file: UploadFile = File(...), user_claims=Depends(authorization_check) ):
     logger.info(file.filename)
-    users_service.upload_photo(photo_kind, user_claims['username'], file)
+    await users_service.upload_photo(photo_kind, user_claims['username'], file)
     return {"filename": file.filename}
 
 
