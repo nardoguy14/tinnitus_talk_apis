@@ -10,6 +10,10 @@ donations_router = APIRouter()
 async def create_donation(donation: Donation):
     return donations_service.create_donation(donation)
 
+@donations_router.post("/payment_intent")
+async def create_donation(donation: Donation):
+    return donations_service.create_donation_intent(donation)
+
 @donations_router.get("/users/donations")
 async def get_donation(username: str):
     return donations_service.get_donations(username=username, fundraiser_id=None)
