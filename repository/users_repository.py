@@ -1,3 +1,4 @@
+from typing import List
 from domain.user import User, UserSearch
 import mysql.connector
 from repository.base_repository import BaseRepository
@@ -98,7 +99,7 @@ def get_photo(user: User, name: str):
         return results[0]
 
 
-def get_user(user_search: UserSearch):
+def get_user(user_search: UserSearch) -> List[User]:
     with BaseRepository() as base_repo:
 
         query_params = []

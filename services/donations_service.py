@@ -1,9 +1,12 @@
 from domain.donation import Donation
 from typing import Optional, List
 from repository import donations_repository
-from services import stripe_service
+from services import stripe_service, users_service
+from domain.user import UserSearch, User
 
 def create_donation(donation: Donation):
+    user: User = users_service.get_user(UserSearch(username=donation.username))[0]
+    donation.user_id = user.id
     return donations_repository.create_donations(donation)
 
 

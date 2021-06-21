@@ -1,4 +1,5 @@
 import base64
+from typing import List
 from fastapi import HTTPException, UploadFile
 from domain.user import User, UserSearch
 from repository import users_repository
@@ -34,7 +35,7 @@ def update_user(user_claims, user: User):
     return users_repository.update_user(user_claims, user)
 
 
-def get_user(user_search: UserSearch):
+def get_user(user_search: UserSearch) -> List[User]:
     return users_repository.get_user(user_search)
 
 
