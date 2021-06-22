@@ -37,7 +37,8 @@ def get_donations(username: Optional[str], fundraiser_id: Optional[str]):
                         donor_last_name,
                         donor_comment,
                         fundraiser_id,
-                        amount,currency 
+                        amount,
+                        currency 
                     FROM donations 
                 """
                 f"WHERE {query_str}")
