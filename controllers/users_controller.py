@@ -35,6 +35,11 @@ async def upload_profile_photo(photo_kind: str, file: UploadFile = File(...), us
     return {"filename": file.filename}
 
 
+@router.get("/users/{username}/photos/{photo_kind}")
+def image_endpoint2(username: str, photo_kind: str):
+    file = users_service.download_photo(photo_kind, username)
+    return StreamingResponse(io.BytesIO(file), media_type="image/jpg")
+
 @router.get("/users/photos/{photo_kind}")
 def image_endpoint(photo_kind: str, user_claims=Depends(authorization_check)):
     file = users_service.download_photo(photo_kind, user_claims['username'])

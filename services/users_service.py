@@ -54,4 +54,5 @@ def download_photo(photo_kind: str, username: str):
         xx = bytes(x[0], 'utf-8')
         return xx
     except Exception as e:
-        return aws_service.download_file(username, "tinnitus-app", f"{photo_kind}photo.jpg")
+        return None
+        # return aws_service.download_file(username, "tinnitus-app", f"{photo_kind}photo.jpg")
