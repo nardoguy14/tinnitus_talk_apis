@@ -1,12 +1,13 @@
 import mysql.connector
+from config import AppSettings
 
 class BaseRepository(object):
     def __init__(self):
         self.mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="CAMera14",
-            database="tinnitus_talks"
+            host=AppSettings.get_settings().mysql_host,
+            user=AppSettings.get_settings().mysql_user,
+            password=AppSettings.get_settings().mysql_password,
+            database=AppSettings.get_settings().mysql_db
         )
         self.cursor = self.mydb.cursor()
 
