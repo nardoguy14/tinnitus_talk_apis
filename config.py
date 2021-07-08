@@ -1,5 +1,8 @@
 from pydantic import BaseSettings
 from functools import lru_cache
+import os
+
+env = os.environ.get("ENV")
 
 
 class Settings(BaseSettings):
@@ -12,7 +15,7 @@ class Settings(BaseSettings):
     mysql_db: str
 
     class Config:
-        env_file = ".env"
+        env_file = f"{env}.env"
 
 
 class AppSettings:

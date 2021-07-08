@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "tinnitus-api-stack"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-b587woiw1tz"
+s3_prefix = "tinnitus-api-stack"
+region = "us-east-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"

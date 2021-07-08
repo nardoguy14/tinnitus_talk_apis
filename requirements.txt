@@ -6,3 +6,4 @@ python-multipart
 pyjwt
 boto3
 stripe
+mangum

@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Tinnitus APIs
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        ENV: test
+
+Resources:
+  TinnitusAPIsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-54cc2f1c
+        SubnetIds:
+          - subnet-29ed6242
+      Events:
+        ApiEvent:
+          Properties:
+            RestApiId:
+              Ref: TinnitusAPIsGateway
+            Path: /{proxy+}
+            Method: ANY
+          Type: Api
+      FunctionName: Tinnitus-APIs-Lambda
+      CodeUri: ./
+      Handler: app.handler
+      Runtime: python3.7
+      Timeout: 900 # timeout of your lambda function
+      MemorySize: 128 # memory size of your lambda function
+      Description: Tinnitus APIs
+      # other options, see ->
+      # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html#sam-specification-template-anatomy-globals-supported-resources-and-properties
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/tinnitus_lambda_role
+
+  TinnitusAPIsGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: test
+      OpenApiVersion: '3.0.0'

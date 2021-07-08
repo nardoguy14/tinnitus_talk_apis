@@ -1,3 +1,7 @@
 *.iml
 __pycache__
 *.pyc
+venv
+app.iml
+.aws-sam
+.DS_Store

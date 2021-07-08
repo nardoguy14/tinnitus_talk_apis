@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from mangum import Mangum
 from controllers.users_controller import router as users_router
 from controllers.donations_controller import donations_router
 from controllers.fundraisers_controller import fundraisers_router
@@ -19,3 +20,9 @@ app.include_router(users_router)
 app.include_router(donations_router)
 app.include_router(fundraisers_router)
 app.include_router(activities_router)
+
+@app.get("/hello")
+def hello_wordl():
+    return {"hello": "world"}
+
+handler = Mangum(app)
