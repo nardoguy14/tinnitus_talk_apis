@@ -3,6 +3,8 @@ from functools import lru_cache
 import os
 
 env = os.environ.get("ENV")
+if env is None:
+    env = ""
 
 
 class Settings(BaseSettings):
@@ -15,6 +17,8 @@ class Settings(BaseSettings):
     mysql_db: str
 
     class Config:
+        print("nardo")
+        print(env)
         env_file = f"{env}.env"
 
 
