@@ -17,9 +17,7 @@ class Settings(BaseSettings):
     mysql_db: str
 
     class Config:
-        print("nardo")
-        print(env)
-        env_file = f"{env}.env"
+        env_file = f"config/{env}.env"
 
 
 class AppSettings:

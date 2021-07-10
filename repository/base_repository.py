@@ -1,5 +1,5 @@
 import mysql.connector
-from config import AppSettings
+from config.config import AppSettings
 
 class BaseRepository(object):
     def __init__(self):
