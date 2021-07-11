@@ -122,7 +122,8 @@ def get_user(user_search: UserSearch) -> List[User]:
                         first_name, 
                         last_name, 
                         email, 
-                        description 
+                        description, 
+                        phoneNumber
                     FROM users """
                   f"WHERE {query_str}")
 
@@ -133,13 +134,15 @@ def get_user(user_search: UserSearch) -> List[User]:
         base_repo.execute(query, filtered_params)
 
         results = []
-        for (id, username, first_name, last_name, email, description) in base_repo:
+        for (id, username, first_name, last_name, email, description, phoneNumber) in base_repo:
             results.append(User(id=id,
                                 username=username,
                                 firstName=first_name,
                                 lastName=last_name,
                                 description=description,
-                                email=email))
+                                email=email,
+                                phoneNumber=phoneNumber
+                                ))
         return results
 
 

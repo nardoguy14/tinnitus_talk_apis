@@ -17,7 +17,7 @@ def create_fundraiser(fundraiser: Fundraiser):
         contact_phone,
         date_start,
         date_end
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         val = (
                fundraiser.name,
                fundraiser.description,
@@ -38,20 +38,21 @@ def create_fundraiser(fundraiser: Fundraiser):
 
 def create_fundraiser_details(fundraiser: Fundraiser):
     with BaseRepository() as base_repo:
-        for detail in fundraiser.details:
-            sql = """
-            INSERT INTO fundraiser_details (
-                fundraiser_id,
-                title,
-                detail
-            ) VALUES (%s, %s, %s)"""
-            val = (
-                fundraiser.id,
-                detail.title,
-                detail.detail
-            )
-            base_repo.execute(sql, val)
-        return {"result": "saved"}
+        if fundraiser.details:
+            for detail in fundraiser.details:
+                sql = """
+                INSERT INTO fundraiser_details (
+                    fundraiser_id,
+                    title,
+                    detail
+                ) VALUES (%s, %s, %s)"""
+                val = (
+                    fundraiser.id,
+                    detail.title,
+                    detail.detail
+                )
+                base_repo.execute(sql, val)
+            return {"result": "saved"}
 
 
 def update_fundraiser(fundraiser: Fundraiser):

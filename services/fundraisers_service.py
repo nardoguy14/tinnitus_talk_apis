@@ -5,10 +5,12 @@ from repository import fundraiser_repository
 from typing import Optional, List
 from services import donations_service, users_service
 
+
 def create_fundraiser(fundraiser: Fundraiser):
     id = fundraiser_repository.create_fundraiser(fundraiser)
     fundraiser.id = id
-    return fundraiser_repository.create_fundraiser_details(fundraiser)
+    fundraiser_repository.create_fundraiser_details(fundraiser)
+    return fundraiser
 
 
 def update_fundraiser(fundraiser: Fundraiser):

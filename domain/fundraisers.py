@@ -19,6 +19,7 @@ class Fundraiser(BaseModel):
     id: Optional[int]
     name: str
     description:str
+    editor_details: Optional[str]
     details: Optional[List[FundraiserDetails]]
     address: str
     city: str
