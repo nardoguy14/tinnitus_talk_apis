@@ -57,35 +57,55 @@ def create_fundraiser_details(fundraiser: Fundraiser):
 
 def update_fundraiser(fundraiser: Fundraiser):
     with BaseRepository() as base_repo:
-        sql = """UPDATE fundraisers 
+
+        params = []
+
+        if fundraiser.name:
+            params.append(' name = %s ')
+        if fundraiser.description:
+            params.append(' description = %s ')
+        if fundraiser.address:
+            params.append(' address = %s ')
+        if fundraiser.city:
+            params.append(' city = %s ')
+        if fundraiser.state:
+            params.append(' state = %s ')
+        if fundraiser.zip:
+            params.append(' zip = %s ')
+        if fundraiser.contact and fundraiser.contact.name:
+            params.append(' contact_person = %s ')
+        if fundraiser.contact and fundraiser.contact.phone_number:
+            params.append(' contact_phone = %s ')
+        if fundraiser.contact and fundraiser.contact.email:
+            params.append(' contact_email = %s ')
+        if fundraiser.date_start:
+            params.append(' date_start = %s ')
+        if fundraiser.date_end:
+            params.append(' date_end = %s ')
+
+        query_str = f" , ".join(params)
+
+        sql = f"""
+        UPDATE fundraisers 
         SET
-        name = %s,
-        description = %s,
-        address = %s,
-        city = %s,
-        state = %s,
-        zip = %s,
-        contact_person = %s,
-        contact_phone = %s,
-        contact_email = %s,
-        date_start = %s,
-        date_end = %s
+        {query_str}
         WHERE id = %s"""
-        val = (
-            fundraiser.name,
-            fundraiser.description,
-            fundraiser.address,
-            fundraiser.city,
-            fundraiser.state,
-            fundraiser.zip,
-            fundraiser.contact.name,
-            fundraiser.contact.phone_number,
-            fundraiser.contact.email,
-            fundraiser.date_start,
-            fundraiser.date_end,
-            fundraiser.id
-        )
-        base_repo.execute(sql, val)
+
+        name = None
+        number = None
+        email = None
+        if fundraiser.contact:
+            name = fundraiser.contact.name
+            number = fundraiser.contact.phone_number
+            email = fundraiser.contact.email
+
+        params = [fundraiser.name, fundraiser.description, fundraiser.address,
+                  fundraiser.city, fundraiser.state, fundraiser.zip, name,
+                  number, email, fundraiser.date_start,
+                  fundraiser.date_end, fundraiser.id]
+        filtered_params = tuple(list(filter(lambda x: x != None, params)))
+        print(sql)
+        base_repo.execute(sql, filtered_params)
         return {"result": "updated"}
 
 

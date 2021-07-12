@@ -17,18 +17,18 @@ class FundraiserContact(BaseModel):
 
 class Fundraiser(BaseModel):
     id: Optional[int]
-    name: str
-    description:str
+    name: Optional[str]
+    description: Optional[str]
     editor_details: Optional[str]
     details: Optional[List[FundraiserDetails]]
-    address: str
-    city: str
-    state: str
-    zip: str
+    address: Optional[str]
+    city: Optional[str]
+    state: Optional[str]
+    zip: Optional[str]
     people: Optional[List[DonationWithUser]]
-    contact: FundraiserContact
-    date_start: str
-    date_end: str
+    contact: Optional[FundraiserContact]
+    date_start: Optional[str]
+    date_end: Optional[str]
 
 
 class UserFundraiserEnrollment(BaseModel):
