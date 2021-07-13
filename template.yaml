@@ -13,11 +13,6 @@ Resources:
   TinnitusAPIsLambda:
     Type: AWS::Serverless::Function
     Properties:
-      VpcConfig:
-        SecurityGroupIds:
-          - sg-54cc2f1c
-        SubnetIds:
-          - subnet-29ed6242
       Events:
         ApiEvent:
           Properties:
