@@ -10,7 +10,7 @@ class Donation(BaseModel):
     donor_first_name: Optional[str]
     donor_last_name: Optional[str]
     donor_comment: Optional[str]
-    amount: int
+    amount: float
     currency: str
 
 
@@ -20,5 +20,5 @@ class DonationWithUser(BaseModel):
     donor_first_name: Optional[str]
     donor_last_name: Optional[str]
     donor_comment: Optional[str]
-    amount: int
+    amount: float
     currency: str

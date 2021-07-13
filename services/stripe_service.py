@@ -7,7 +7,7 @@ stripe.api_key = "sk_test_51J4YG5EtXr3xL8O5KlVhKkTEjL6MZPOkpij6GQfDtmTRGqhwMbSg3
 def create_payment(amount: float):
     try:
         intent = stripe.PaymentIntent.create(
-            amount=amount * 100,
+            amount=int(amount * 100),
             currency='usd'
         )
         return {
