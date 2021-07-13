@@ -18,6 +18,10 @@ class User(BaseModel):
     phoneNumber: Optional[str]
 
 
+class UserPhoto(BaseModel):
+    base64photo: str
+
+
 class UserSearch(BaseModel):
     user_id: Optional[str]
     first_name: Optional[str]

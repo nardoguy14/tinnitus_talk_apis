@@ -3,7 +3,7 @@ from typing import Optional
 import io
 from starlette.responses import StreamingResponse
 
-from domain.user import User, UserSearch
+from domain.user import User, UserSearch, UserPhoto
 from services import users_service
 from domain.authorization_helpers import authorization_check
 import logging
@@ -28,22 +28,23 @@ async def create_user(user: User):
     return users_service.create_user(user)
 
 
-@router.post("/users/photos/{photo_kind}")
-async def upload_profile_photo(photo_kind: str, file: UploadFile = File(...), user_claims=Depends(authorization_check) ):
-    logger.info(file.filename)
-    await users_service.upload_photo(photo_kind, user_claims['username'], file)
-    return {"filename": file.filename}
+@router.post("/users/photos/{photo_kind}/base64")
+async def upload_profile_photo2(photo_kind: str, photo: UserPhoto, user_claims=Depends(authorization_check)):
+    await users_service.upload_photo(photo_kind, user_claims['username'], photo.base64photo)
+    return {"filename": "done"}
 
 
 @router.get("/users/{username}/photos/{photo_kind}")
 def image_endpoint2(username: str, photo_kind: str):
     file = users_service.download_photo(photo_kind, username)
-    return StreamingResponse(io.BytesIO(file), media_type="image/jpg")
+    return {'file': file}
+    # return StreamingResponse(io.BytesIO(file), media_type="image/jpg")
 
 @router.get("/users/photos/{photo_kind}")
 def image_endpoint(photo_kind: str, user_claims=Depends(authorization_check)):
     file = users_service.download_photo(photo_kind, user_claims['username'])
-    return StreamingResponse(io.BytesIO(file), media_type="image/jpg")
+    return {'file': file}
+    # return StreamingResponse(io.BytesIO(file), media_type="image/jpg")
 
 
 @router.put("/users")

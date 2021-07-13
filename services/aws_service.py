@@ -2,9 +2,11 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 from fastapi import UploadFile
-import os
 import base64
-
+import os
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def upload_file(username: str, filename: str, file: UploadFile, bucket, object_name=None):
@@ -24,10 +26,12 @@ def upload_file(username: str, filename: str, file: UploadFile, bucket, object_n
 
     try:
         response = s3_client.upload_fileobj(file.file, bucket, object_name)
-        print(response)
+        logger.info("success")
+        logger.info(response)
     except ClientError as e:
+        logger.info("error")
         logging.error(e)
-        print(e)
+        logger.info(e)
         return False
     return True
 
