@@ -7,3 +7,4 @@ pyjwt
 boto3
 stripe
 mangum
+moment
